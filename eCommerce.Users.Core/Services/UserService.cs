@@ -28,12 +28,7 @@ internal class UserService(IUserRepository userRepository, IMapper mapper) : IUs
     /// <returns>An <see cref="AuthenticationResponse"/> containing the user details and a token if registration is successful; otherwise, null.</returns>
     public async Task<AuthenticationResponse?> RegisterAsync(RegisterRequest registerRequest)
     {
-        var user = new ApplicationUser()
-        {
-            Email = registerRequest.Email,
-            Name = registerRequest.Name,
-            Gender = registerRequest.Gender.ToString(),
-        };
+        var user = mapper.Map<ApplicationUser>(registerRequest);
         
         var userResponse = await userRepository.AddUserAsync(user);
         

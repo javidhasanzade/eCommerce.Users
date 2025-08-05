@@ -19,5 +19,7 @@ public class ApplicationUserMappingProfile : Profile
                 opt => opt.Ignore())
             .ForMember(dest => dest.Token,
                 opt => opt.Ignore());
+
+        CreateMap<RegisterRequest, ApplicationUser>();
     }
 }

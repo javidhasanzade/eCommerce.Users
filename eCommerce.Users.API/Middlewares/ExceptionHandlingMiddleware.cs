@@ -10,10 +10,10 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         }
         catch (Exception ex)
         {
-            logger.LogError($"{ex.GetType()} - {ex.Message}");
+            logger.LogError("{Type} - {ExMessage}", ex.GetType(), ex.Message);
             if (ex.InnerException != null)
             {
-                logger.LogError($"{ex.InnerException.GetType()} - {ex.InnerException.Message}");
+                logger.LogError("{Type} - {InnerExceptionMessage}", ex.InnerException.GetType(), ex.InnerException.Message);
             }
             
             httpContext.Response.StatusCode = 500;

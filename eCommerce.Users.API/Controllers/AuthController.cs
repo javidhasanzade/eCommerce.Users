@@ -6,21 +6,14 @@ namespace eCommerce.Users.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService;
-
-    public AuthController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     [HttpPost("login")]
     public async Task<IActionResult?> Login(LoginRequest loginRequest)
     {
-        var authResponse = await _userService.LoginAsync(loginRequest);
+        var authResponse = await userService.LoginAsync(loginRequest);
         
-        if (authResponse == null || !authResponse.Success)
+        if (authResponse is not { Success: true })
             return Unauthorized(authResponse);
         
         return Ok(authResponse);
@@ -32,9 +25,9 @@ public class AuthController : ControllerBase
         if (registerRequest == null)
             return BadRequest("Invalid registration request");
 
-        var authResponse = await _userService.RegisterAsync(registerRequest);
+        var authResponse = await userService.RegisterAsync(registerRequest);
         
-        if (authResponse == null || !authResponse.Success)
+        if (authResponse is not { Success: true })
             return BadRequest(authResponse);
         
         return Ok(authResponse);
